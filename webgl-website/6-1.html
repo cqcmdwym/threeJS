@@ -33,7 +33,6 @@
         // B begin
         // 纹理坐标怎么弄
         var loader = new THREE.TextureLoader();
-        //loader.crossOrigin = "anonymous";
         var texture =  loader.load("../textures/a.jpg");
         var material = new THREE.MeshBasicMaterial({map:texture});
         var mesh = new THREE.Mesh( geometry,material );
