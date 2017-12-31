@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Three框架</title>
+        <script src="../three.js"></script>
+        <style type="text/css">
+            div#canvas-frame {
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                height: 600px;
+                background-color: #EEEEEE;
+            }
+
+        </style>
+        <script>
+            var renderer;
+            function initThree() {
+                width = document.getElementById('canvas-frame').clientWidth;
+                height = document.getElementById('canvas-frame').clientHeight;
+                renderer = new THREE.WebGLRenderer({
+                    antialias : true
+                });
+                renderer.setSize(width, height);
+                document.getElementById('canvas-frame').appendChild(renderer.domElement);
+                renderer.setClearColor(0xFFFFFF, 1.0);
+            }
+
+            var camera;
+            function initCamera() {
+                camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+                camera.position.x = 600;
+                camera.position.y = 100;
+                camera.position.z = 600;
+                camera.up.x = 0;
+                camera.up.y = 1;
+                camera.up.z = 0;
+//                camera.lookAt({
+//                    x : 0,
+//                    y : 0,
+//                    z : 0
+//                });
+            }
+
+            var scene;
+            function initScene() {
+                scene = new THREE.Scene();
+            }
+
+            var light;
+            function initLight() {
+            }
+
+            var cube;
+            function initObject() {
+                var geometry = new THREE.CubeGeometry( 200, 100, 50,1,1,2);
+                var material = new THREE.MeshLambertMaterial( { color:0xFFFFFF, wireframe: true} );
+                var mesh = new THREE.Mesh( geometry,material);
+                mesh.position = new THREE.Vector3(0,0,0);
+                scene.add(mesh);
+            }
+
+            var axes;
+            function initAxes(){
+                axes= new THREE.AxesHelper(1000);
+                scene.add(axes);
+                //the x, y, z axis are red, green, and blue, respectively (i.e., RGB), so if you can match RGB with XYZ, it can aid in determining which axis is which.
+            }
+            
+            function threeStart() {
+                initThree();
+                initCamera();
+                initScene();
+                initAxes();
+                initLight();
+                initObject();
+                renderer.clear();
+                camera.lookAt(scene.position);
+                renderer.render(scene, camera);
+            }
+
+        </script>
+    </head>
+
+    <body onload="threeStart();">
+        <div id="canvas-frame"></div>
+    </body>
+</html>
+
+<!--
+我们使用了兰伯特材质，并将这种材质赋予了黑色，所以，你才会发现最后的效果是黑色。如果，我们把材质颜色设置为红色，那么物体是不是就会显示红色呢？
+
+答案是否定的，这是因为，在场景中没有任何光源的情况下，物体不能反射光源到人的眼里，所以物体应该是黑色的。这与物体的材质颜色几乎没有关系。打个比方，在月高风黑夜，伸手不见五指的夜晚，一群穿着彩衣的美女在你面前跳舞，你能分辨出他们是穿的彩色衣服吗？不能。-->
